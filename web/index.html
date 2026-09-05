@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CloudShield – Cloud Resource Management, Deadlock Detection & Cybersecurity Threat Detection System</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ========================================================================
+       TOP NAVIGATION BAR (Sticky)
+       ======================================================================== -->
+  <header class="navbar">
+    <a href="#dashboard" class="brand-container">
+      <div class="brand-cloud-icon">
+        <!-- 3D Cloud Glyph matching Image 1 -->
+        <svg viewBox="0 0 24 24">
+          <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>CloudShield <span class="brand-badge">Enterprise Core</span></h1>
+      </div>
+    </a>
+
+    <!-- Top Search Bar -->
+    <div class="nav-search-bar">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input type="text" id="globalSearchInput" placeholder="Search resources, VMs, threats, or audit logs...">
+    </div>
+
+    <!-- Right Controls -->
+    <div class="nav-actions">
+      <div class="status-indicator-pill">
+        <span class="status-dot"></span>
+        <span>Kernel Online</span>
+      </div>
+
+      <div class="user-profile-badge" id="userProfileBadge" title="Click to Switch User / Login">
+        <div class="user-avatar" id="navUserAvatar">A</div>
+        <div class="user-info">
+          <span class="user-name" id="navUserName">System Administrator</span>
+          <span class="user-role-badge" id="navUserRole">ADMIN</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       PILLS BAR (IMAGE 1 REFERENCE TAGS & SMOOTH SCROLL NAV)
+       ======================================================================== -->
+  <div class="pills-nav-wrapper">
+    <nav class="scroll-nav-pills">
+      <a href="#dashboard" class="nav-pill active">
+        <span>📊</span> Dashboard
+      </a>
+      <a href="#vms" class="nav-pill">
+        <span>💻</span> Virtual Machines
+      </a>
+      <a href="#resources" class="nav-pill">
+        <span>⚡</span> Resource Pools
+      </a>
+      <a href="#requests" class="nav-pill">
+        <span>📝</span> Requests & Allocations
+      </a>
+      <a href="#deadlock" class="nav-pill">
+        <span>🔄</span> Deadlock WFG
+      </a>
+      <a href="#cybersecurity" class="nav-pill">
+        <span>🛡️</span> Threat Radar
+      </a>
+      <a href="#logs" class="nav-pill">
+        <span>📜</span> Audit Logs
+      </a>
+      <a href="#reports" class="nav-pill">
+        <span>📈</span> SQL Reports
+      </a>
+      <a href="#viva" class="nav-pill">
+        <span>🎓</span> Viva Guide
+      </a>
+    </nav>
+
+    <!-- Reference tags strictly matching user's Image 1 design -->
+    <div class="reference-tags-strip">
+      <span class="tag-badge tag-lavender">#share</span>
+      <span class="tag-badge tag-purple-outline">#sync</span>
+      <span class="tag-badge tag-orange">#storage</span>
+      <span class="tag-badge tag-pink">#accesible</span>
+      <span class="tag-badge tag-indigo">#safety</span>
+      <span class="tag-badge tag-dark-outline">#cloo</span>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MAIN APPLICATION CONTAINER (SCROLLDOWN LAYOUT)
+       ======================================================================== -->
+  <main class="app-container">
+
+    <!-- ======================================================================
+         SECTION 1: DASHBOARD OVERVIEW (SYNAPTIX AESTHETIC - IMAGE 2)
+         ====================================================================== -->
+    <section id="dashboard" class="dashboard-section">
+      <!-- Welcome Hero Banner -->
+      <div class="welcome-hero">
+        <div class="welcome-text">
+          <h2 id="heroWelcomeText">Welcome back, System Administrator</h2>
+          <p>Here's what's happening with your cloud infrastructure, deadlock graph, and security telemetry today.</p>
+        </div>
+        <div class="welcome-controls">
+          <button class="mode-pill-btn" onclick="refreshAllData()">
+            <span class="status-dot"></span> Live Refresh
+          </button>
+          <button class="btn btn-primary" onclick="document.getElementById('deployVmModal').classList.add('open')">
+            + Deploy New VM
+          </button>
+        </div>
+      </div>
+
+      <!-- 4 Glowing Stat Cards with Waveforms/Sparklines -->
+      <div class="stats-grid" style="margin-top: 1.5rem;">
+        <!-- Card 1: Cloud Utilization -->
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-icon-badge purple">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                <line x1="6" y1="18" x2="6.01" y2="18"></line>
+              </svg>
+            </div>
+            <!-- Mini Sparkline Waveform -->
+            <div class="sparkline-container">
+              <svg class="sparkline-svg" viewBox="0 0 90 30">
+                <path d="M0,20 Q15,5 30,18 T60,8 T90,15" fill="none" stroke="#f59e0b" stroke-width="2"/>
+              </svg>
+            </div>
+          </div>
+          <div class="stat-label">Total Cloud Cores</div>
+          <div class="stat-value-group">
+            <span class="stat-main-number" id="kpiTotalResources">32 Cores</span>
+            <span class="stat-delta-badge positive">↗ +12.5% this month</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Active Virtual Machines -->
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-icon-badge cyan">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+            </div>
+            <div class="sparkline-container">
+              <svg class="sparkline-svg" viewBox="0 0 90 30">
+                <path d="M0,22 Q15,10 30,24 T60,5 T90,12" fill="none" stroke="#a855f7" stroke-width="2"/>
+              </svg>
+            </div>
+          </div>
+          <div class="stat-label">Active Virtual Machines</div>
+          <div class="stat-value-group">
+            <span class="stat-main-number" id="kpiActiveVms">4 / 4</span>
+            <span class="stat-delta-badge positive">↗ +8.2% this month</span>
+          </div>
+        </div>
+
+        <!-- Card 3: Cybersecurity Precision & Health -->
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-icon-badge pink">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <div class="sparkline-container">
+              <svg class="sparkline-svg" viewBox="0 0 90 30">
+                <path d="M0,15 Q15,25 30,8 T60,20 T90,6" fill="none" stroke="#06b6d4" stroke-width="2"/>
+              </svg>
+            </div>
+          </div>
+          <div class="stat-label">Security Precision Score</div>
+          <div class="stat-value-group">
+            <span class="stat-main-number" id="kpiHealthScore">98.5%</span>
+            <span class="stat-delta-badge positive">↗ +2.1% this month</span>
+          </div>
+        </div>
+
+        <!-- Card 4: Deadlock Risk Index -->
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-icon-badge orange">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <polyline points="1 20 1 14 7 14"></polyline>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+              </svg>
+            </div>
+            <div class="sparkline-container">
+              <svg class="sparkline-svg" viewBox="0 0 90 30">
+                <path d="M0,18 Q15,18 30,18 T60,5 T90,24" fill="none" stroke="#ec4899" stroke-width="2"/>
+              </svg>
+            </div>
+          </div>
+          <div class="stat-label">Deadlock Risk (WFG)</div>
+          <div class="stat-value-group">
+            <span class="stat-main-number" id="kpiDeadlockRisk" style="color: #ef4444;">ALERT</span>
+            <span class="stat-delta-badge negative">DFS Cycle Active</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row: Performance Spline Chart + Speedometer Gauge -->
+      <div class="charts-row" style="margin-top: 1.5rem;">
+        <!-- Glowing Spline Chart -->
+        <div class="glass-card performance-chart-card">
+          <div class="card-header-flex">
+            <div class="card-title-group">
+              <h3>Cloud Infrastructure Performance Index</h3>
+              <p>Aggregated resource throughput, IOPS, and memory allocations over rolling quarters</p>
+            </div>
+            <span class="tag-badge tag-lavender">Auto Scale Active</span>
+          </div>
+          <div class="chart-canvas-wrapper">
+            <canvas id="performanceChartCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Speedometer Circular Radial Gauge (Image 2 right panel) -->
+        <div class="glass-card radial-gauge-card">
+          <div class="card-title-group" style="text-align: center; width: 100%;">
+            <h3>Cyber Threat Index</h3>
+            <p>Real-time security posture</p>
+          </div>
+          
+          <div class="gauge-svg-container">
+            <svg width="200" height="200" viewBox="0 0 200 200">
+              <!-- Background track circle -->
+              <circle cx="100" cy="100" r="70" stroke="rgba(139, 92, 246, 0.15)" stroke-width="14" fill="none" stroke-linecap="round"/>
+              <!-- Foreground progress circle -->
+              <circle id="gaugeProgressCircle" cx="100" cy="100" r="70" 
+                      stroke="#22d3ee" stroke-width="14" fill="none" 
+                      stroke-linecap="round"
+                      stroke-dasharray="440"
+                      stroke-dashoffset="66"
+                      transform="rotate(-90 100 100)"
+                      style="transition: stroke-dashoffset 1s ease; filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.5));"/>
+            </svg>
+            <div class="gauge-center-text">
+              <span class="gauge-score" id="gaugeScore">98.5%</span>
+              <span class="gauge-caption">System Safe</span>
+            </div>
+          </div>
+
+          <div class="gauge-legend">
+            <div class="legend-item">
+              <span class="legend-color-dot" style="background: #22d3ee;"></span>
+              <span>Health 98%</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color-dot" style="background: #a855f7;"></span>
+              <span>Load 24%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 2: CLOUD VIRTUAL MACHINES
+         ====================================================================== -->
+    <section id="vms">
+      <div class="glass-card">
+        <div class="card-header-flex">
+          <div class="card-title-group">
+            <h3><span>💻</span> Cloud Virtual Machines Management</h3>
+            <p>Provision, inspect, scale, and monitor compute instances running on host cluster</p>
+          </div>
+          <button class="btn btn-primary" id="btnOpenDeployModal">+ Deploy Instance</button>
+        </div>
+
+        <div class="vms-grid" id="vmsGrid">
+          <!-- Populated dynamically via app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 3: CLOUD RESOURCE POOLS
+         ====================================================================== -->
+    <section id="resources">
+      <div class="glass-card">
+        <div class="card-header-flex">
+          <div class="card-title-group">
+            <h3><span>⚡</span> Cloud Hardware Resource Pools</h3>
+            <p>Live tracking of physical CPU Cores, RAM, NVMe Storage, and Network Bandwidth</p>
+          </div>
+          <span class="tag-badge tag-orange">Pool Quotas Enforced</span>
+        </div>
+
+        <div class="resource-pools-grid" id="resourcePoolsGrid">
+          <!-- Populated dynamically via app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 4: RESOURCE REQUESTS & ALLOCATIONS
+         ====================================================================== -->
+    <section id="requests">
+      <div class="requests-alloc-grid">
+        <!-- Pending Requests Table -->
+        <div class="glass-card">
+          <div class="card-header-flex">
+            <div class="card-title-group">
+              <h3><span>📝</span> Pending Resource Requests</h3>
+              <p>Requests waiting for approval and ACID transactional allocation</p>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="openRequestModal()">+ New Request</button>
+          </div>
+
+          <div class="data-table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>VM</th>
+                  <th>Resource</th>
+                  <th>Units</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="requestsTableBody">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Active Allocations Table -->
+        <div class="glass-card">
+          <div class="card-header-flex">
+            <div class="card-title-group">
+              <h3><span>📌</span> Active Resource Allocations</h3>
+              <p>Granted resource leases backed by PostgreSQL transactions</p>
+            </div>
+            <span class="tag-badge tag-lavender">Live Allocations</span>
+          </div>
+
+          <div class="data-table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Alloc ID</th>
+                  <th>VM Instance</th>
+                  <th>Resource Pool</th>
+                  <th>Leased Units</th>
+                  <th>State</th>
+                  <th>Release</th>
+                </tr>
+              </thead>
+              <tbody id="allocationsTableBody">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 5: DEADLOCK DETECTION & WAIT-FOR GRAPH (OS MODULE)
+         ====================================================================== -->
+    <section id="deadlock">
+      <div class="glass-card">
+        <div class="card-header-flex">
+          <div class="card-title-group">
+            <h3><span>🔄</span> Deadlock Detection – Wait-For Graph (WFG) & DFS</h3>
+            <p>Operating Systems cycle detection using 3-Color Depth-First Search algorithm</p>
+          </div>
+          <div style="display: flex; gap: 0.6rem;">
+            <button class="btn btn-outline btn-sm" id="btnSimulateDeadlock">Simulate Cycle</button>
+            <button class="btn btn-primary btn-sm" id="btnRunDeadlockDetection">Run DFS Detection</button>
+            <button class="btn btn-danger btn-sm" id="btnResolveDeadlock" style="display: none;">Auto-Resolve Deadlock</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Deadlock Alert Banner -->
+        <div class="cycle-alert-banner" id="deadlockAlertBanner" style="display: none;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <div>
+            <div class="alert-title">DEADLOCK DETECTED! Circular Wait Identified in Operating System Graph</div>
+            <div class="alert-path" id="deadlockCyclePath">VM-3 -> VM-2 -> VM-1 -> VM-3</div>
+          </div>
+        </div>
+
+        <div class="deadlock-hero-panel" style="margin-top: 1.25rem;">
+          <!-- Interactive HTML5 Canvas -->
+          <div class="wfg-canvas-container">
+            <canvas id="wfgCanvas"></canvas>
+            <div class="wfg-toolbar">
+              <span style="font-size: 0.75rem; color: #94a3b8;">Interactive: Drag VM nodes to reposition graph</span>
+              <div style="display: flex; gap: 1rem; font-size: 0.75rem;">
+                <span style="color: #a855f7;">● Acyclic Edge</span>
+                <span style="color: #ef4444;">● Cycle (Deadlock)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- OS Deadlock Academic Theory Box -->
+          <div class="deadlock-theory-box">
+            <div class="theory-item">
+              <h5>Coffman Conditions for Deadlock</h5>
+              <p>A deadlock occurs if and only if all 4 conditions hold: <strong>Mutual Exclusion</strong>, <strong>Hold & Wait</strong>, <strong>No Preemption</strong>, and <strong>Circular Wait</strong>.</p>
+            </div>
+            <div class="theory-item">
+              <h5>Wait-For Graph (WFG) Principle</h5>
+              <p>A simplified variant of Resource Allocation Graph (RAG) where vertices are processes and directed edge \(V_i \to V_j\) signifies that \(V_i\) is blocked waiting for \(V_j\) to release a resource.</p>
+            </div>
+            <div class="theory-item">
+              <h5>3-Color DFS Cycle Algorithm</h5>
+              <p>Vertices are labeled <code>WHITE</code> (unvisited), <code>GRAY</code> (on active recursion stack), or <code>BLACK</code> (visited). An edge encountered pointing to a <code>GRAY</code> vertex constitutes a back-edge, proving a directed cycle!</p>
+            </div>
+            <div class="theory-item">
+              <h5>Automated Preemption Recovery</h5>
+              <p>The resolution engine selects a victim VM in the cycle and breaks its wait dependency, preempting its allocation to restore the system to an acyclic safe state.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 6: CYBERSECURITY THREAT DETECTION
+         ====================================================================== -->
+    <section id="cybersecurity">
+      <div class="glass-card">
+        <div class="card-header-flex">
+          <div class="card-title-group">
+            <h3><span>🛡️</span> Cybersecurity Threat Detection & Radar</h3>
+            <p>Active anomaly scanning for brute-force attacks, unauthorized privilege attempts, and resource abuse</p>
+          </div>
+          <span class="tag-badge tag-pink">Zero-Trust Guard</span>
+        </div>
+
+        <div class="cyber-threat-dashboard">
+          <!-- Active Threat Alerts Feed -->
+          <div class="glass-card threat-radar-card" style="margin: 0; background: rgba(14, 9, 32, 0.7);">
+            <div class="card-header-flex">
+              <h4>Live Incident Telemetry</h4>
+              <button class="btn btn-outline btn-sm" onclick="fetchThreatScan()">Re-Scan</button>
+            </div>
+            <div class="threat-alert-list" id="threatAlertsList">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+
+          <!-- Threat Simulation & Defense Controls -->
+          <div class="glass-card" style="margin: 0; background: rgba(14, 9, 32, 0.7);">
+            <h4>Cybersecurity Threat Simulation & Testing</h4>
+            <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.3rem;">
+              Test defensive triggers and automatic account lockout mechanisms for viva presentation:
+            </p>
+
+            <div class="simulation-actions">
+              <button class="btn btn-danger btn-sm" id="btnSimulateBruteForce">
+                Simulate Brute-Force Attack
+              </button>
+              <button class="btn btn-outline btn-sm" id="btnSimulateResourceAbuse">
+                Simulate Resource Abuse Spike
+              </button>
+              <button class="btn btn-primary btn-sm" onclick="unblockAccount(2)">
+                Unblock DevOps Account (John)
+              </button>
+            </div>
+
+            <div style="margin-top: 1.5rem; background: rgba(9, 5, 20, 0.7); padding: 1rem; border-radius: var(--radius-md); border: 1px solid rgba(139, 92, 246, 0.2);">
+              <h5 style="color: #c084fc; font-size: 0.85rem; margin-bottom: 0.4rem;">Cybersecurity Defense Mechanisms Implemented:</h5>
+              <ul style="font-size: 0.78rem; color: #cbd5e1; list-style: disc; margin-left: 1.2rem; line-height: 1.6;">
+                <li><strong>Salted SHA-256 Hashing:</strong> Cryptographic password hashing to prevent credential theft.</li>
+                <li><strong>PreparedStatement Defense:</strong> Parameterized SQL queries preventing SQL injection across all DAOs.</li>
+                <li><strong>Brute-Force Lockout:</strong> Accounts are locked after 3 consecutive failed logins within 5 minutes.</li>
+                <li><strong>Role-Based Access Control (RBAC):</strong> Granular permissions separating Admin, Operator, and Viewer.</li>
+                <li><strong>Audit Logging:</strong> Centralized security event logging with severity levels (LOW, MEDIUM, HIGH, CRITICAL).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 7: SYSTEM AUDIT LOGS
+         ====================================================================== -->
+    <section id="logs">
+      <div class="glass-card">
+        <div class="card-header-flex">
+          <div class="card-title-group">
+            <h3><span>📜</span> System & Security Audit Logs</h3>
+            <p>Immutable audit trail of authentications, security violations, and deadlock incidents</p>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="fetchAuditLogs()">Refresh Logs</button>
+        </div>
+
+        <!-- Log Tabs Strip -->
+        <div class="logs-tabs-strip">
+          <button class="tab-btn active" data-tab="security" onclick="switchLogTab('security')">Security Logs</button>
+          <button class="tab-btn" data-tab="login" onclick="switchLogTab('login')">Login Logs</button>
+          <button class="tab-btn" data-tab="deadlock" onclick="switchLogTab('deadlock')">Deadlock Logs</button>
+        </div>
+
+        <div class="data-table-wrapper">
+          <table class="data-table">
+            <thead id="logsTableHead">
+              <!-- Populated via JS -->
+            </thead>
+            <tbody id="logsTableBody">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 8: REPORTS & SQL VIEWS
+         ====================================================================== -->
+    <section id="reports">
+      <div class="glass-card">
+        <div class="card-header-flex">
+          <div class="card-title-group">
+            <h3><span>📈</span> Analytical Reports & PostgreSQL Views</h3>
+            <p>High-level summaries aggregated directly from PostgreSQL database views</p>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="window.print()">Print / Export PDF</button>
+        </div>
+
+        <div class="reports-kpi-summary">
+          <div class="stat-card">
+            <div class="stat-label">Database Schema</div>
+            <div class="stat-main-number" style="font-size: 1.3rem;">PostgreSQL 18</div>
+            <span style="font-size: 0.72rem; color: #34d399;">9 Tables • 5 Views • 3 Triggers</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Security Incidents (24h)</div>
+            <div class="stat-main-number" style="font-size: 1.3rem;">4 Logged</div>
+            <span style="font-size: 0.72rem; color: #f59e0b;">View: view_security_incident_report</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Average CPU Usage</div>
+            <div class="stat-main-number" style="font-size: 1.3rem;">43.7%</div>
+            <span style="font-size: 0.72rem; color: #c084fc;">View: view_resource_utilization</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Active WFG Edges</div>
+            <div class="stat-main-number" style="font-size: 1.3rem;">3 Edges</div>
+            <span style="font-size: 0.72rem; color: #ef4444;">View: view_active_wait_graph</span>
+          </div>
+        </div>
+
+        <div style="background: rgba(12, 8, 28, 0.65); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid rgba(139, 92, 246, 0.15);">
+          <h4 style="color: #fff; margin-bottom: 0.5rem;">SQL View Definition Reference (04_views.sql):</h4>
+          <pre class="viva-code-snippet">CREATE OR REPLACE VIEW view_system_kpis AS
+SELECT 
+    (SELECT COUNT(*) FROM virtual_machines) AS total_vms,
+    (SELECT COUNT(*) FROM virtual_machines WHERE status = 'RUNNING') AS running_vms,
+    (SELECT COUNT(*) FROM users) AS total_users,
+    (SELECT COUNT(*) FROM deadlock_logs WHERE resolution_status = 'DETECTED') AS unresolved_deadlocks,
+    (SELECT COUNT(*) FROM security_logs WHERE severity IN ('HIGH', 'CRITICAL')) AS critical_threats;</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 9: BCA VIVA & ARCHITECTURE GUIDE
+         ====================================================================== -->
+    <section id="viva">
+      <div class="glass-card">
+        <div class="card-header-flex">
+          <div class="card-title-group">
+            <h3><span>🎓</span> BCA Viva & Academic Architecture Reference Guide</h3>
+            <p>Key viva questions, concepts, and architectural explanations for project defense</p>
+          </div>
+          <span class="tag-badge tag-indigo">BCA Project Viva</span>
+        </div>
+
+        <div class="viva-cards-grid">
+          <!-- OOP & Software Engineering -->
+          <div class="viva-topic-card">
+            <h4><span>☕</span> OOP & Architecture (Model-DAO-Service-Controller)</h4>
+            <div class="viva-qa-item">
+              <div class="viva-question">Q: Explain the Model-DAO-Service-Controller architecture used in CloudShield.</div>
+              <div class="viva-answer">
+                - <strong>Model:</strong> Pure Java POJO beans (User, Resource, VirtualMachine) encapsulating entities with private attributes and getters/setters.<br>
+                - <strong>DAO:</strong> Data Access Objects (UserDAO, AllocationDAO) using JDBC PreparedStatements for safe database operations.<br>
+                - <strong>Service:</strong> Business logic layer (DeadlockDetector, ThreatDetector, SecurityManager) implementing algorithms independently of UI.<br>
+                - <strong>Controller:</strong> REST API controller (ApiController, CloudShieldServlet) dispatching JSON HTTP requests.
+              </div>
+            </div>
+            <div class="viva-qa-item">
+              <div class="viva-question">Q: How are OOP principles applied in this project?</div>
+              <div class="viva-answer">
+                - <strong>Encapsulation:</strong> Private variables in models accessed solely through validated getters/setters.<br>
+                - <strong>Abstraction:</strong> Services hide complex graph algorithms (DFS) and cryptographic hashing behind clean method signatures.<br>
+                - <strong>Single Responsibility:</strong> Each DAO manages exactly one database table.
+              </div>
+            </div>
+          </div>
+
+          <!-- Operating Systems & Deadlock -->
+          <div class="viva-topic-card">
+            <h4><span>🔄</span> Operating Systems & Deadlock Detection</h4>
+            <div class="viva-qa-item">
+              <div class="viva-question">Q: What is a Wait-For Graph (WFG) and how is it used here?</div>
+              <div class="viva-answer">
+                In OS theory, a Wait-For Graph is a directed graph where vertices are processes (Virtual Machines) and edges denote that process A is waiting for a resource held by process B. For single-unit resources, a cycle in the WFG is both a necessary and sufficient condition for a deadlock.
+              </div>
+            </div>
+            <div class="viva-qa-item">
+              <div class="viva-question">Q: How does the DFS Cycle Detection algorithm work?</div>
+              <div class="viva-answer">
+                We implement a 3-Color DFS traversal (WHITE/GRAY/BLACK). When an edge is traversed to an already <code>GRAY</code> vertex (currently on the recursion call stack), a back-edge is identified, proving the existence of a circular wait condition.
+              </div>
+            </div>
+          </div>
+
+          <!-- Cybersecurity & Threat Detection -->
+          <div class="viva-topic-card">
+            <h4><span>🛡️</span> Cybersecurity & Threat Defense</h4>
+            <div class="viva-qa-item">
+              <div class="viva-question">Q: How does CloudShield protect against SQL Injection?</div>
+              <div class="viva-answer">
+                All database queries use <code>PreparedStatement</code> with parameter placeholders (<code>?</code>). The database driver treats user input strictly as literal values rather than executable SQL syntax.
+              </div>
+            </div>
+            <div class="viva-qa-item">
+              <div class="viva-question">Q: How is brute-force authentication prevented?</div>
+              <div class="viva-answer">
+                Every login is tracked in <code>login_logs</code>. If 3 consecutive failed login attempts occur, the account is automatically locked (<code>account_status = 'BLOCKED'</code>) and a <code>CRITICAL</code> alert is logged.
+              </div>
+            </div>
+          </div>
+
+          <!-- Database & SQL Concepts -->
+          <div class="viva-topic-card">
+            <h4><span>🗄️</span> Database & PostgreSQL Features</h4>
+            <div class="viva-qa-item">
+              <div class="viva-question">Q: How are ACID transactions implemented in Java JDBC?</div>
+              <div class="viva-answer">
+                In <code>AllocationDAO.java</code>, we invoke <code>connection.setAutoCommit(false)</code>. We lock the resource row (<code>FOR UPDATE</code>), verify availability, deduct balance, insert allocation, and invoke <code>connection.commit()</code>. If any failure occurs, <code>connection.rollback()</code> restores consistency.
+              </div>
+            </div>
+            <div class="viva-qa-item">
+              <div class="viva-question">Q: What database constraints and triggers are utilized?</div>
+              <div class="viva-answer">
+                - <strong>CHECK constraints:</strong> Enforce non-negative resource balances and valid statuses.<br>
+                - <strong>FOREIGN KEYS:</strong> Ensure referential integrity with cascading deletes.<br>
+                - <strong>TRIGGERS:</strong> Automated lockout trigger (<code>trg_login_security</code>) and VM state sync.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       MODALS
+       ======================================================================== -->
+
+  <!-- 1. Deploy VM Modal -->
+  <div class="modal-overlay" id="deployVmModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Deploy New Virtual Machine</h3>
+        <button class="modal-close-btn" id="btnCloseDeployModal">&times;</button>
+      </div>
+      <form id="deployVmForm">
+        <div class="form-group">
+          <label class="form-label">Instance Name</label>
+          <input type="text" class="form-input" id="deployVmName" placeholder="e.g. Analytics-Node-01" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Operating System</label>
+          <select class="form-select" id="deployVmOs">
+            <option value="Ubuntu 22.04 LTS">Ubuntu 22.04 LTS</option>
+            <option value="Debian 12 Bookworm">Debian 12 Bookworm</option>
+            <option value="RedHat Enterprise 9">RedHat Enterprise 9</option>
+            <option value="Alpine Linux 3.19">Alpine Linux 3.19</option>
+          </select>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem;">
+          <div class="form-group">
+            <label class="form-label">CPU (Cores)</label>
+            <input type="number" class="form-input" id="deployVmCpu" value="2" min="1" max="16" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">RAM (GB)</label>
+            <input type="number" class="form-input" id="deployVmRam" value="4" min="1" max="64" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Storage (GB)</label>
+            <input type="number" class="form-input" id="deployVmStorage" value="50" min="10" max="500" required>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem;">
+          <button type="button" class="btn btn-outline" onclick="document.getElementById('deployVmModal').classList.remove('open')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Deploy Instance</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Resource Request Modal -->
+  <div class="modal-overlay" id="requestResourceModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Submit Resource Request</h3>
+        <button class="modal-close-btn" id="btnCloseReqModal">&times;</button>
+      </div>
+      <form id="resourceRequestForm">
+        <div class="form-group">
+          <label class="form-label">Requesting Virtual Machine</label>
+          <select class="form-select" id="reqVmSelect"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Target Resource Pool</label>
+          <select class="form-select" id="reqResourceSelect"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Requested Units</label>
+          <input type="number" class="form-input" id="reqUnitsInput" value="4" min="1" max="500" required>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem;">
+          <button type="button" class="btn btn-outline" onclick="document.getElementById('requestResourceModal').classList.remove('open')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. User Login & Switch Account Modal -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Authenticate & Switch Role</h3>
+        <button class="modal-close-btn" id="btnCloseLoginModal">&times;</button>
+      </div>
+
+      <!-- Quick Demo Presets -->
+      <div style="margin-bottom: 1.25rem;">
+        <label class="form-label">Quick Demo Accounts (1-Click Fill):</label>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="selectDemoAccount('admin', 'admin123')">Admin (admin)</button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="selectDemoAccount('john', 'john123')">Operator (john)</button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="selectDemoAccount('alex', 'alex123')">Viewer (alex)</button>
+        </div>
+      </div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input type="text" class="form-input" id="loginUsername" placeholder="Enter username" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="loginPassword" placeholder="Enter password" required>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.25rem;">
+          <button type="button" class="btn btn-outline" onclick="document.getElementById('loginModal').classList.remove('open')">Close</button>
+          <button type="submit" class="btn btn-primary">Log In</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="js/wfg-canvas.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
