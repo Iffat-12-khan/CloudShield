@@ -1,0 +1,21 @@
+{
+  "name": "cloudshield",
+  "version": "1.0.0",
+  "description": "CloudShield – Cloud Resource Management, Deadlock Detection & Cybersecurity Threat Detection System",
+  "scripts": {
+    "dev": "powershell -ExecutionPolicy Bypass -File ./run.ps1",
+    "start": "java -cp \"bin;lib/postgresql.jar;lib/servlet-api.jar\" CloudShield.Main",
+    "build": "powershell -Command \"javac -cp 'lib/postgresql.jar;lib/servlet-api.jar' -d bin (Get-ChildItem -Path src -Filter *.java -Recurse | Select-Object -ExpandProperty FullName)\""
+  },
+  "keywords": [
+    "java",
+    "jdbc",
+    "cloud-computing",
+    "deadlock-detection",
+    "cybersecurity",
+    "wait-for-graph",
+    "bca-project"
+  ],
+  "author": "Iffat Khan, Zoha Arkati & Zahra Khan",
+  "license": "ISC"
+}
