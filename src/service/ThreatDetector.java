@@ -1,6 +1,5 @@
 package service;
 
-import dao.LoginLogDAO;
 import dao.ResourceDAO;
 import dao.ResourceRequestDAO;
 import dao.SecurityLogDAO;
@@ -28,8 +27,6 @@ public class ThreatDetector {
     private final ResourceDAO resourceDAO = new ResourceDAO();
     private final ResourceRequestDAO requestDAO = new ResourceRequestDAO();
     private final SecurityLogDAO securityLogDAO = new SecurityLogDAO();
-    private final LoginLogDAO loginLogDAO = new LoginLogDAO();
-
     /**
      * Executes a full system vulnerability and threat scan.
      */

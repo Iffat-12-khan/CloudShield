@@ -27,7 +27,6 @@ public class CloudSecurityManager {
     private final SecurityLogDAO securityLogDAO = new SecurityLogDAO();
 
     private static final int MAX_FAILED_ATTEMPTS = 3;
-    private static final int LOCKOUT_WINDOW_MINUTES = 5;
 
     /**
      * Hashes a password with salt using standard Java SHA-256 MessageDigest.
